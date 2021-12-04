@@ -1,7 +1,9 @@
 import React, {  useState, useEffect } from 'react';
 import Loader from "react-loader-spinner";
 import Market from './components/Market';
+import Filter from './components/Filter';
 import { AiOutlineShoppingCart } from "react-icons/ai";
+
 
 const url = 'http://localhost:8000/api/robots';
 
@@ -14,14 +16,17 @@ const App = () => {
     arr1.push(item.material)
   )
   const uniqueMaterials = [...new Set(arr1)];
-  console.log(uniqueMaterials);
+
+  const filterItems = (uniqueMaterials) => {
+    const newItems = robots.filter((robot) => robot.material === uniqueMaterials)
+    setRobots(newItems)
+  }
 
   const fetchRobot = async () => {
     setLoading(true);
         try {
             const response = await fetch (url);
             const robots = await response.json();
-            console.log(robots);
             setLoading(false);
             setRobots(robots.data);
         } catch (error) {
@@ -48,17 +53,11 @@ const App = () => {
 
 		<div className="col-span-3 fixed top-8 w-1/4">
           <p className='my-6 text-2xl font-bold'>Product Material</p>
+
           <div className="flex justify-around items-center flex-wrap mr-6">
-            { 
-              uniqueMaterials.map(material => {
-                  return (
-                     <button className='font-semiBold material text-white m-2'>{material}</button> 
-                  
-                 
-                  )
-              })
-          }
+           <Filter uniqueMaterials={uniqueMaterials} filterItems={filterItems} />
         </div>
+
         <div className="mt-28">
             <button className='flex justify-center items-center text-center p-6 bg-red-500 hover:bg-red-700 rounded w-2/4 h-12 text-white'>
                     <AiOutlineShoppingCart className='text-3xl mr-4' /> Cart <sup className='ml-3 bg-white text-black p-2'>2</sup>
