@@ -7,11 +7,13 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const url = 'http://localhost:8000/api/robots';
 
+
 const App = () => {
   const [robots, setRobots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(12);
+  const [cartItems, setCartItems] = useState([]);
 
 // fetching robots data from api
  const fetchRobot = async () => {
@@ -63,9 +65,19 @@ const App = () => {
   }
 
   // setting up cart
-  const cart = () => {
-    console.log('cart');
-  }
+ 
+  const onAdd = (robot) => {
+    const exist = cartItems.find((x) => x.name === robot.name);
+    if (exist) {
+      setCartItems(
+        cartItems.map((x) =>
+          x.name === robot.name ? { ...exist, qty: exist.qty + 1 } : x
+        )
+      );
+    } else {
+      setCartItems([...cartItems, { ...robot, qty: 1 }]);
+    }
+  };
 
   return (
     <main className="p-4">
@@ -82,13 +94,13 @@ const App = () => {
 
         <div className="mt-28">
             <button className='flex justify-center items-center text-center p-6 bg-red-500 hover:bg-red-700 rounded w-2/4 h-12 text-white'>
-                    <AiOutlineShoppingCart className='text-3xl mr-4' /> Cart <sup className='ml-3 bg-white text-black p-2'>0</sup>
+                    <AiOutlineShoppingCart className='text-3xl mr-4' /> Cart <sup>{cartItems.length}</sup>
             </button>
         </div>
 		</div>
 
 		<div className="col-span-9 absolute right-0 w-3/4">
-			  <Market robots={currentPosts} cart={cart} />
+			  <Market robots={currentPosts} onAdd={onAdd} />
         <Pagination postsPerPage={postsPerPage} totalPosts={robots.length} paginate={paginate} />
 		</div>
 

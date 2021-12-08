@@ -9,7 +9,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
 
   return (
     <nav>
-      <ul className='flex justify-evenly items-center my-8'>
+      <ul className='flex justify-evenly items-center flex-wrap my-8'>
         {pageNumbers.map(number => (
           <li key={number} className='bg-black text-white px-4 py-2'>
             <a onClick={() => paginate(number)} href='!#' className='page-link'>
