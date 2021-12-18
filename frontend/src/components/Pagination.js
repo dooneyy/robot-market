@@ -11,7 +11,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
     <nav>
       <ul className='flex justify-evenly items-center flex-wrap my-8'>
         {pageNumbers.map(number => (
-          <li key={number} className='bg-black text-white px-4 py-2'>
+          <li key={number} className='bg-black text-white px-4 py-2 m-3'>
             <a onClick={() => paginate(number)} href='!#' className='page-link'>
               {number}
             </a>
